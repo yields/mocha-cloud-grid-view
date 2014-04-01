@@ -1,12 +1,5 @@
 
 /**
- * Module dependencies.
- */
-
-var max = require('max-component')
-  , sum = require('sum-component');
-
-/**
  * Expose `GridView`.
  */
 
@@ -15,7 +8,7 @@ exports = module.exports = GridView;
 /**
  * Default symbol map.
  */
- 
+
 exports.symbols = {
   ok: '✓',
   error: '✖',
@@ -215,4 +208,43 @@ GridView.prototype.draw = function(ctx){
 
 function format(b) {
   return b.browserName + ' ' + b.version + ' on ' + b.platform
+}
+
+/**
+ * Max `arr`, `fn`.
+ *
+ * @param {Array} arr
+ * @param {Function} fn
+ * @api private
+ */
+
+function max(arr, fn){
+  var max = -Infinity;
+  var ret;
+
+  for (var i = 0; i < arr.length; ++i) {
+    ret = fn(arr[i], i);
+    max = ret > max ? ret : max;
+  }
+
+  return max;
+}
+
+/**
+ * Sum `arr`, `fn`.
+ *
+ * @param {Array} arr
+ * @param {Function} fn
+ * @api private
+ */
+
+function sum(arr, fn){
+  fn = Function('_', 'return _.' + fn);
+  var sum = 0;
+
+  for (var i = 0;  i < arr.length; ++i) {
+    sum += fn(arr[i], i);
+  }
+
+  return sum;
 }
